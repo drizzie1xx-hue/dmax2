@@ -6,6 +6,9 @@ namespace offsets {
 	uintptr_t temp2 = 0x0;
 
 	uintptr_t Uworld = 0x169D6108; // NOT in dump - GWorld RVA, must be updated per build
+	// GWorld is encrypted: decrypted = UworldDecryptMul * enc - UworldDecryptSub (mod 2^64)
+	uintptr_t UworldDecryptMul = 0xA323219E066D436DuLL;
+	uintptr_t UworldDecryptSub = 0x6FA832BFC5B44018uLL;
 	uintptr_t CameraLocationPointer = 0x128; // NOT in dump - verify for current build
 	uintptr_t CameraRotationPointer = 0x138; // NOT in dump - verify for current build
 	uintptr_t GameInstance = 0x248;

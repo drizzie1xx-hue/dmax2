@@ -4,10 +4,16 @@
 #include "utils.h"
 #include "offsets.h"
 
+inline uintptr_t decryptUworld(uintptr_t enc) {
+	if (!enc)
+		return 0;
+	return static_cast<uintptr_t>(offsets::UworldDecryptMul * static_cast<uint64_t>(enc) - offsets::UworldDecryptSub);
+}
+
 bool update_va_text() {
 	for (int i = 0, e = 0; i < INT_MAX && e < 3; i++) {
 		point::va_text = point::Base + i * 0x1000;
-		auto uworld = mem.Read<uintptr_t>(point::va_text + offsets::Uworld);
+		auto uworld = decryptUworld(mem.Read<uintptr_t>(point::va_text + offsets::Uworld));
 		auto level = mem.Read<uintptr_t>(uworld + offsets::PersistentLevel);
 		if (uworld && level && mem.Read<uintptr_t>(level + offsets::OwningWorld) == uworld) {
 			return true;
@@ -71,7 +77,7 @@ void newInfo()
 
 		mem.ExecuteMemoryReads(mem.hS);
 
-		point::Uworld = mem.SReads<uintptr_t>(mem.hS, point::va_text + offsets::Uworld);
+		point::Uworld = decryptUworld(mem.SReads<uintptr_t>(mem.hS, point::va_text + offsets::Uworld));
 
 		if (point::Uworld) {
 			point::LocationPointer = mem.SReads<uintptr_t>(mem.hS, point::Uworld + offsets::CameraLocationPointer);
@@ -118,7 +124,7 @@ void newInfo()
 	}
 	else {
 
-		point::Uworld = mem.Read<uintptr_t>(point::va_text + offsets::Uworld);
+		point::Uworld = decryptUworld(mem.Read<uintptr_t>(point::va_text + offsets::Uworld));
 
 		if (!point::Uworld) goto END;
 
