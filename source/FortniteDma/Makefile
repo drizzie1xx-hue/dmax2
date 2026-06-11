@@ -115,9 +115,10 @@ $(OUTDIR)/$(PROJECT).exe: $(OBJS)
 	$(CXX) $(OBJS) $(LDFLAGS) -o $@
 	@echo "[OK] Built: $@"
 	@echo ""
-	@echo "Required DLLs to ship alongside the EXE:"
+	@echo "Required DLLs to ship alongside the EXE (all in dll/ folder):"
 	@echo "  vmm.dll  leechcore.dll  FTD3XX.dll  dbghelp.dll  symsrv.dll"
-	@echo "  info.db  mmap.txt (generated at runtime)"
+	@echo "  libwinpthread-1.dll  info.db"
+	@echo "  mmap.txt is generated at first run"
 
 clean:
 	rm -rf $(OUTDIR)
