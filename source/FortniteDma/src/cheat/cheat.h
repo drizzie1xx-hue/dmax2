@@ -362,7 +362,7 @@ void MainUpdate()
 
 		if (!it.second.ignore)
 		{
-			it.second.lastUpdate = chrono::system_clock::now();
+			it.second.lastUpdate = std::chrono::system_clock::now();
 
 			if (it.second.BoneArray) {
 

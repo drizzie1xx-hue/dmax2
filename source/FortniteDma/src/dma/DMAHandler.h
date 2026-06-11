@@ -4,6 +4,7 @@
 #include <array>
 #include <unordered_map>
 #include <deque>
+#include <vector>
 #include "iostream"
 
 #pragma comment(lib, "vmm.lib")
@@ -19,12 +20,12 @@ class DMAHandler
 
 	struct LibModules
 	{
-		HMODULE VMM = nullptr;
-		HMODULE FTD3XX = nullptr;
-		HMODULE LEECHCORE = nullptr;
+		HMODULE VMM;
+		HMODULE FTD3XX;
+		HMODULE LEECHCORE;
 	};
 
-	static inline LibModules modules{};
+	static inline LibModules modules = { nullptr, nullptr, nullptr };
 
 	static inline VMM_HANDLE DMA_HANDLE = nullptr;
 
@@ -611,7 +612,7 @@ class DMAScatter
 
 	void prepare()
 	{
-		DMA->queueScatterReadEx(handle, reinterpret_cast<uint64_t>(address), &value, sizeof(T));
+		DMA->QueueScatterReadEx(handle, reinterpret_cast<uint64_t>(address), &value, sizeof(T));
 	}
 public:
 	DMAScatter(DMAHandler* DMAHandler, VMMDLL_SCATTER_HANDLE handle, void* address)

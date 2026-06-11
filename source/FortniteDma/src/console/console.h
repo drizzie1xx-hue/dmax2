@@ -92,7 +92,7 @@ namespace hue
     inline std::string ctos(int c)
     {
         return (0 <= c && c < 256) ?
-            "(text) " + NAMES.at(c % 16) + TEXT(" + ") +
+            "(text) " + NAMES.at(c % 16) + " + " +
             "(background) " + NAMES.at(c / 16) :
             "BAD COLOR";
     }
