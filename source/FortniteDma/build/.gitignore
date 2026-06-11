@@ -1,0 +1,4 @@
+# Ignore all intermediate object files but keep the EXE tracked
+*.o
+external/
+src/

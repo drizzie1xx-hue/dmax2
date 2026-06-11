@@ -33,7 +33,7 @@ int DMAHandler::FixDTB()
 {
 
 	PVMMDLL_MAP_MODULEENTRY moduleEntry;
-	bool result = VMMDLL_Map_GetModuleFromNameU(this->DMA_HANDLE, this->GetPID(), (LPSTR)this->GameName.c_str(), &moduleEntry, NULL);
+	bool result = VMMDLL_Map_GetModuleFromNameU(this->DMA_HANDLE, this->GetPID(), (LPSTR)this->GameName.c_str(), &moduleEntry, 0);
 	if (result)
 		return 1; //Doesn't need to be patched lol
 
@@ -116,7 +116,7 @@ int DMAHandler::FixDTB()
 		auto dtb = possibleDTBs[i];
 		VMMDLL_ConfigSet(this->DMA_HANDLE, VMMDLL_OPT_PROCESS_DTB | this->GetPID(), dtb);
 		PVMMDLL_MAP_MODULEENTRY moduleEntry;
-		bool result = VMMDLL_Map_GetModuleFromNameU(this->DMA_HANDLE, this->GetPID(), (LPSTR)this->GameName.c_str(), &moduleEntry, NULL);
+		bool result = VMMDLL_Map_GetModuleFromNameU(this->DMA_HANDLE, this->GetPID(), (LPSTR)this->GameName.c_str(), &moduleEntry, 0);
 		if (result) {
 			delete[] bytes;
 			clearLine();
@@ -196,13 +196,13 @@ int DMAHandler::Init(const wchar_t* wname, bool memMap)
 			return -1;
 		}
 
-		if (!modules.VMM)
+		if (!modules.FTD3XX)
 		{
 			std::cout << hue::red << "(!) " << hue::white << "Could not load FTD3XX.dll" << std::endl;
 			return -1;
 		}
 
-		if (!modules.VMM)
+		if (!modules.LEECHCORE)
 		{
 			std::cout << hue::red << "(!) " << hue::white << "Could not load leechcore.dll" << std::endl;
 			return -1;
@@ -451,7 +451,7 @@ void DMAHandler::QueueScatterReadEx(VMMDLL_SCATTER_HANDLE handle, uint64_t addr,
 {
 	//assertNoInit();
 
-	DWORD memoryPrepared = NULL;
+	DWORD memoryPrepared = 0;
 	VMMDLL_Scatter_PrepareEx(handle, addr, size, static_cast<PBYTE>(bffr), &memoryPrepared);
 }
 
@@ -461,7 +461,7 @@ void DMAHandler::ExecuteScatterRead(VMMDLL_SCATTER_HANDLE handle) const
 
 	VMMDLL_Scatter_ExecuteRead(handle);
 	//Clear after using it
-	VMMDLL_Scatter_Clear(handle, processInfo.pid, NULL);
+	VMMDLL_Scatter_Clear(handle, processInfo.pid, 0);
 
 	VMMDLL_Scatter_CloseHandle(handle);
 }
@@ -483,7 +483,7 @@ void DMAHandler::ExecuteScatterWrite(VMMDLL_SCATTER_HANDLE handle) const
 		log("failed to Execute Scatter write\n");
 	}
 	//Clear after using it
-	if (!VMMDLL_Scatter_Clear(handle, processInfo.pid, NULL)) {
+	if (!VMMDLL_Scatter_Clear(handle, processInfo.pid, 0)) {
 		log("failed to clear write Scatter\n");
 	}
 }
@@ -509,8 +509,11 @@ void DMAHandler::CloseScatterHandle(VMMDLL_SCATTER_HANDLE& handle) const
 void DMAHandler::CloseDMA()
 {
 	log("DMA closed!");
-	DMA_HANDLE = nullptr;
-	VMMDLL_Close(DMA_HANDLE);
+	if (DMA_HANDLE)
+	{
+		VMMDLL_Close(DMA_HANDLE);
+		DMA_HANDLE = nullptr;
+	}
 }
 
 #if COUNT_TOTAL_READSIZE

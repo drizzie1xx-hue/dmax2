@@ -1,6 +1,6 @@
 
-#include "..\kmbox\kmbox.hpp"
-#include "..\settings.h"
+#include "../kmbox/kmbox.hpp"
+#include "../settings.h"
 
 namespace aim {
 

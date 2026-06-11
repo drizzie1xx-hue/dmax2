@@ -4,8 +4,8 @@
 #include <algorithm>
 #include <exception>
 #include <iomanip>
-using namespace std;
 #include <windows.h>
+using namespace std;
 
 #ifndef _COM_H_
 #define _COM_H_
@@ -77,7 +77,7 @@ public:
 		{
 			if (!GetCommState(_com_handle, &_dcb))
 				return false;
-			if (!BuildCommDCB(set_str, &_dcb))
+			if (!BuildCommDCBA(set_str, &_dcb))
 				return false;
 			return SetCommState(_com_handle, &_dcb) == TRUE;
 		}
@@ -173,7 +173,7 @@ protected:
 		if (is_open())
 			close();
 
-		_com_handle = CreateFile(
+		_com_handle = CreateFileA(
 			_com_str,
 			GENERIC_READ | GENERIC_WRITE,
 			0,
@@ -263,7 +263,7 @@ protected:
 		if (is_open())
 			close();
 
-		_com_handle = CreateFile(
+		_com_handle = CreateFileA(
 			_com_str,
 			GENERIC_READ | GENERIC_WRITE,
 			0,

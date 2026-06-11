@@ -1,7 +1,7 @@
 #pragma once
 
 inline bool connect_serial_kmbox() {
-	string port = find_port("USB-SERIAL CH340");
+	std::string port = find_port("USB-SERIAL CH340");
 
 	if (!port.empty()) {
 

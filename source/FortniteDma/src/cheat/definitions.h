@@ -278,21 +278,21 @@ enum class BoneID : int {
 struct PlayerCache {
 	bool ignore = false;
 
-	chrono::system_clock::time_point lastUpdate = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point lastUpdate = std::chrono::system_clock::now();
 
 	uintptr_t PlayerState = 0;
 	uintptr_t Pawn = 0;
-	chrono::system_clock::time_point lastPawn = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point lastPawn = std::chrono::system_clock::now();
 	uintptr_t Mesh = 0;
 	uintptr_t RootComponent = 0;
-	chrono::system_clock::time_point lastMesh = std::chrono::system_clock::now(); // root component too
+	std::chrono::system_clock::time_point lastMesh = std::chrono::system_clock::now(); // root component too
 	uintptr_t BoneArray = 0;
 	tarray BoneArrays[2]{};
-	chrono::system_clock::time_point lastBoneArray = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point lastBoneArray = std::chrono::system_clock::now();
 	Vector3 Velocity{};
-	chrono::system_clock::time_point lastVelocity = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point lastVelocity = std::chrono::system_clock::now();
 	uint32_t TeamId = 0;
-	chrono::system_clock::time_point lastTeamId = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point lastTeamId = std::chrono::system_clock::now();
 	float last_render = 0;
 
 	BYTE isDying = 0;

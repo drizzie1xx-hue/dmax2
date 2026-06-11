@@ -6,10 +6,9 @@
 #include <thread>
 #include "conio.h"
 #pragma comment(lib, "setupapi.lib")
-using namespace std;
 inline HANDLE hSerial;
 
-inline string find_port(const string& targetDescription) {
+inline std::string find_port(const std::string& targetDescription) {
 	HDEVINFO hDevInfo = SetupDiGetClassDevsA(&GUID_DEVCLASS_PORTS, 0, 0, DIGCF_PRESENT);
 	if (hDevInfo == INVALID_HANDLE_VALUE) return "";
 
